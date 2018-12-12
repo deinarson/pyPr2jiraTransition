@@ -45,7 +45,7 @@ def run_example():
         'API-TOKEN',       # Name of your secret. If you followed the README 'secret' should exists
         ""                 # The version of the secret. Empty string for latest
     )
-    return "My secret value is {}".format(secret.value)
+    return "Working! API secret is {}\n".format(secret.value)
 
 
 @app.route('/')
@@ -57,7 +57,21 @@ def hello_world():
 
 @app.route('/ping')
 def ping():
-    return "Hello world"
+    client_id="not present in env"
+    tenant="not present in env"
+    secret="not present in env"
+
+    if 'AZURE_CLIENT_ID' in os.environ:
+        client_id=os.environ['AZURE_CLIENT_ID']
+    if 'AZURE_CLIENT_SECRET' in os.environ:
+        secret=os.environ['AZURE_CLIENT_SECRET']
+    if 'AZURE_TENANT_ID' in os.environ:
+        tenant=os.environ['AZURE_TENANT_ID']
+    if 'KEY_VAULT_URI' in os.environ:
+        kv_uri=os.environ['KEY_VAULT_URI']
+
+    responce = "tenant=" + tenant + ", secret=" + secret + ", client_id=" + client_id + ", KEY_VAULT_URI=" + kv_uri
+    return responce
 
 if __name__ == '__main__':
   app.run()
