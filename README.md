@@ -29,8 +29,8 @@ API_TOKEN="kv-demo-token"
 export KEY_VAULT_URI="https://${vault_name}.vault.azure.net"
 export AZURE_CLIENT_SECRET='kv-demo-sp-webapp-secret'
 export AZURE_CLIENT_SECRET_NAME='kv-demo-sp-secret_name'
-export AZURE_SUBSCRIPTION_ID=$(az account show --query=id| tr -d \" )
-export AZURE_TENANT_ID=$(az account  show  --query=tenantId  | tr -d \" )
+export AZURE_SUBSCRIPTION_ID=$(az account show --query=id| xargs)
+export AZURE_TENANT_ID=$(az account  show  --query=tenantId  | xargs )
 # if web app is already created
 #  export AZURE_CLIENT_ID=$( az ad app list --query "[?displayName=='${web_app_name}'].appId" --output tsv |  grep -v 'In a')
 
@@ -67,10 +67,10 @@ az keyvault secret list --vault-name "${vault_name}"
 ## 4: Create SP RBAC for WebApp
 
 ``` bash
-az ad sp create-for-rbac -n "${web_app_name}" --password "${AZURE_CLIENT_SECRET}" --skip-assignment
+az ad sp create-for-rbac -n "${web_app_name}.vault.azure.net" --password "${AZURE_CLIENT_SECRET}" --skip-assignment
 
 # Get the sp appId
-export AZURE_CLIENT_ID=$(az ad sp list | grep -v 'In a' | jq ".[] | select( .appDisplayName == \"${web_app_name}\" ) .appId"  | tr -d \" )
+export AZURE_CLIENT_ID=$(az ad sp list | grep -v 'In a' | jq ".[] | select( .appDisplayName == \"${web_app_name}\" ) .appId"  | xargs )
 
 az keyvault set-policy --name "${vault_name}" --spn "${AZURE_CLIENT_ID}" --key-permissions decrypt sign
  
@@ -139,8 +139,8 @@ web_app_name="kv-demo-webapp"
 export AZURE_CLIENT_SECRET='kv-demo-sp-webapp-secret'
 export KEY_VAULT_URI="https://${vault_name}.vault.azure.net"
 # for some reason AZ messes this up, you will want to review what you get
-export AZURE_TENANT_ID=$(az account  show  --query=tenantId | tr -d \" )
-export AZURE_SUBSCRIPTION_ID=$(az account show --query=id  | tr -d \" )
+export AZURE_TENANT_ID=$(az account  show  --query=tenantId | xargs)
+export AZURE_SUBSCRIPTION_ID=$(az account show --query=id  | xargs )
 export AZURE_CLIENT_ID=$( az ad app list --query "[?displayName=='${web_app_name}'].appId" --output tsv |  grep -v 'In a')
 
 
