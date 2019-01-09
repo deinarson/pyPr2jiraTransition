@@ -4,4 +4,6 @@ grpcio==1.14.2
 grpcio-tools==1.14.2
 protobuf==3.6.1
 six==1.12.0
-
+azure==4.0.0
+azure-mgmt-keyvault==1.1.0
+azure-keyvault==1.1.0
