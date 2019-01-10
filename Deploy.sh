@@ -3,7 +3,7 @@
 # Define variables
 RANDOM_SUFFIX=$(cat /dev/urandom | tr -dc 'a-z' | fold -w 5 | head -n 1)
 echo "Using random suffix $RANDOM_SUFFIX"
-RANDOM_SUFFIX=dale
+#RANDOM_SUFFIX=dale2
 RESOURCE_GROUP=fnkv-$RANDOM_SUFFIX-rg
 FUNCTION_APP=fnkv-$RANDOM_SUFFIX-func
 STORAGE_ACCOUNT=fnkv$RANDOM_SUFFIX
